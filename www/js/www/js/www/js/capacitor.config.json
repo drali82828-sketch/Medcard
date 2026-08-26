@@ -1,0 +1,30 @@
+{
+  "appId": "com.alimahdi.smartflashcard",
+  "appName": "Smart Flashcard",
+  "webDir": "www",
+  "backgroundColor": "#14203F",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 700,
+      "launchAutoHide": true,
+      "backgroundColor": "#14203F",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    },
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_flashcard",
+      "iconColor": "#2F6FED",
+      "sound": "beep.wav"
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#14203F"
+    }
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
