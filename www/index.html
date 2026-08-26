@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#14203F">
+<title>Smart Flashcard</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-theme="light">
+
+<!-- ================= SPLASH ================= -->
+<div id="splash">
+  <div class="particles" id="splashParticles"></div>
+  <svg class="brain" viewBox="0 0 64 64" fill="none">
+    <path d="M32 8c-9 0-15 6-15 13 0 4 2 6 2 10 0 8 6 13 13 13s13-5 13-13c0-4 2-6 2-10 0-7-6-13-15-13z"
+      stroke="#9FD8FF" stroke-width="1.6" opacity=".85"/>
+    <path d="M24 20c2 3 2 7 0 10M40 20c-2 3-2 7 0 10M32 16v28" stroke="#7FE0F2" stroke-width="1.2" opacity=".7"/>
+    <circle cx="24" cy="24" r="1.6" fill="#7FE0F2"/><circle cx="40" cy="24" r="1.6" fill="#7FE0F2"/>
+    <circle cx="32" cy="34" r="1.6" fill="#7FE0F2"/>
+  </svg>
+  <div class="card-flip"></div>
+  <div class="credit-line name">Made by Ali Mohammad Mahdi</div>
+  <div class="credit-line college">College of Medicine</div>
+  <div class="credit-line univ">University of Kufa</div>
+  <div class="glow-line"></div>
+</div>
+
+<div id="app">
+
+  <!-- ================= TOP BAR ================= -->
+  <div class="topbar">
+    <div class="brand display">Smart Flashcard<small id="topbarSub">Your personal memory system</small></div>
+    <div style="display:flex;gap:8px;">
+      <button class="icon-btn" id="themeToggleBtn" title="Toggle theme">🌗</button>
+      <button class="icon-btn" id="settingsBtn" title="Settings">⚙️</button>
+    </div>
+  </div>
+
+  <!-- ================= HOME ================= -->
+  <section class="screen active" id="screen-home">
+    <div id="homeContent"></div>
+  </section>
+
+  <!-- ================= ADD ================= -->
+  <section class="screen" id="screen-add">
+    <h2 class="display" style="margin:6px 2px 18px;">Add Information</h2>
+
+    <div class="card" style="margin-bottom:16px;">
+      <div class="field">
+        <label>Quick add (optional)</label>
+        <textarea id="quickAddText" placeholder="Paste a raw fact and turn it into a card, e.g. &quot;The normal adult heart rate is 60–100 bpm.&quot;"></textarea>
+      </div>
+      <button class="btn-secondary" id="quickAddBtn">✨ Turn into a question &amp; answer</button>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <label>Question</label>
+        <textarea id="cardQuestion" placeholder="Enter your question"></textarea>
+      </div>
+      <div class="field">
+        <label>Answer</label>
+        <textarea id="cardAnswer" placeholder="Enter the answer"></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Deck</label>
+          <select id="cardDeck"><option value="">No deck</option></select>
+        </div>
+        <div class="field">
+          <label>Tags</label>
+          <input id="cardTags" placeholder="comma, separated">
+        </div>
+      </div>
+      <div class="field">
+        <label>Notes (optional)</label>
+        <textarea id="cardNotes" placeholder="Anything extra to remember"></textarea>
+      </div>
+      <button class="btn-primary" id="saveCardBtn" style="background: var(--blue); color:#fff;">SAVE</button>
+    </div>
+  </section>
+
+  <!-- ================= REVIEW ================= -->
+  <section class="screen" id="screen-review">
+    <div id="reviewContent"></div>
+  </section>
+
+  <!-- ================= CARDS ================= -->
+  <section class="screen" id="screen-cards">
+    <h2 class="display" style="margin:6px 2px 14px;">Your Cards</h2>
+    <div class="search-bar">
+      <input id="cardSearch" placeholder="Search questions, answers, tags…">
+    </div>
+    <div class="filter-chips" id="filterChips"></div>
+    <div class="deck-chip-row" id="deckChipsForCards"></div>
+    <div id="cardsList"></div>
+  </section>
+
+  <!-- ================= STATISTICS ================= -->
+  <section class="screen" id="screen-stats">
+    <h2 class="display" style="margin:6px 2px 14px;">Statistics</h2>
+    <div id="statsContent"></div>
+  </section>
+
+  <!-- ================= SETTINGS ================= -->
+  <section class="screen" id="screen-settings">
+    <h2 class="display" style="margin:6px 2px 14px;">Settings</h2>
+    <div id="settingsContent"></div>
+  </section>
+
+  <!-- ================= BOTTOM NAV ================= -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-screen="home"><span class="ic">🏠</span>Home</button>
+    <button class="nav-btn" data-screen="cards"><span class="ic">📚</span>Cards</button>
+    <button class="nav-btn add" data-screen="add"><span class="ic">➕</span>Add</button>
+    <button class="nav-btn" data-screen="review"><span class="ic">🧠</span>Review</button>
+    <button class="nav-btn" data-screen="stats"><span class="ic">📊</span>Stats</button>
+  </nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-backdrop" id="deckModalBackdrop">
+  <div class="modal-sheet">
+    <div class="modal-close"><button class="icon-btn" id="deckModalClose">✕</button></div>
+    <h3>Manage decks</h3>
+    <div class="field">
+      <label>New deck name</label>
+      <div class="field-row">
+        <input id="newDeckName" placeholder="e.g. Surgery" style="flex:1;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;background:var(--surface);color:var(--text);">
+        <button class="btn-secondary" id="addDeckBtn" style="flex:0 0 auto;width:auto;padding:12px 16px;">Add</button>
+      </div>
+    </div>
+    <div id="deckManageList"></div>
+  </div>
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/srs.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/app.js"></script>
+</body>
+  </html>
